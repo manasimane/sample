@@ -11,10 +11,12 @@ pipeline{
       checkout scm
       }
     }
+
     stage('Build'){
       steps{
       mvn clean package
+      }
     }
-    }
+    
   }
 }
