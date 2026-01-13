@@ -3,7 +3,7 @@ pipeline{
 
   stages{
     stage('Test'){
-      echo"Test block"
+      echo "Test block"
       sh 'ls'
     }
     stage('Deploy'){
