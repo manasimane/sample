@@ -1,17 +1,19 @@
 pipeline{
   agent any
 
+  tools{
+    jdk 'jdk17'
+  }
+  
   stages{
-    stage('Test'){
+    stage('checkout'){
       steps{
-      echo "Test block"
-      sh 'ls'
+      checkout scm
       }
     }
-    stage('Deploy'){
+    stage('Build'){
       steps{
-      echo "Test deploy"
-      sh 'ls'
+      mvn clean package
     }
     }
   }
