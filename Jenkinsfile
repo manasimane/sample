@@ -27,7 +27,7 @@ pipeline{
           expression{ params.env == 'prod' }
         }
         steps{
-          echo "running in dev"
+          echo "Running in dev"
         }
       }
     }
