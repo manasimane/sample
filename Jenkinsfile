@@ -1,34 +1,36 @@
 pipeline{
-  agent any
-  
-  parameters{
-    choice(
-      name: 'env',
-      choices: ['dev', 'test', 'prod'],
-      description: 'Choice the environment from dropdown'
-    )
+
+  parameter{
+    choice (name: env, choices: ['dev', 'test', 'prod'], 
+           description: "Select enviornment for deployment")
   }
-    stages{
-      stage('Build'){
-        steps{
-        echo "building the application"
-        }
-      }
-      stage('test'){
-        when{
-          expression { params.env != 'prod'}
-        }
-        steps{
-          echo "Running in test"
-        }
-      }
-      stage('dev'){
-        when{
-          expression{ params.env == 'prod' }
-        }
-        steps{
-          echo "Running in dev"
-        }
+  
+  stages{
+    
+    stage('Build'){
+      steps{
+      echo "Building the application"
       }
     }
+
+    stage('Dev'){
+       when{
+          expression{ params.env == 'dev'} 
+        }
+      steps{
+        echo "Deplying to dev"
+      }
+    }
+
+    stage('prod'){
+       when {
+          expression {params.env == 'prod' }
+        }
+      steps{
+       input message : "Type yes to proceed or else no"
+        echo "Deploying to prod"
+      }
+    }
+    
+  }
 }
