@@ -35,4 +35,9 @@ agent any
     }
     
   }
+  post{
+    success { echo "Ran successfully" }
+    failure { echo "Failed pipeline" }
+    always { echo "Ran anyways"}
+  }
 }
