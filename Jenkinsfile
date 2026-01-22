@@ -3,7 +3,7 @@ pipeline{
 agent any
   
   parameters{
-    choice (name: my_env, choices: ['dev', 'test', 'prod'], 
+    choice (name: 'my_env', choices: ['dev', 'test', 'prod'], 
            description: "Select enviornment for deployment")
   }
   
@@ -29,7 +29,7 @@ agent any
           expression {params.my_env == 'prod' }
         }
       steps{
-       input message : "Type yes to proceed or else no"
+       input message: "Type yes to proceed or else no"
         echo "Deploying to prod"
       }
     }
