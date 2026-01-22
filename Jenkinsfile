@@ -21,6 +21,7 @@ agent any
         }
       steps{
         echo "Deplying to dev"
+        exit 1
       }
     }
 
