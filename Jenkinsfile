@@ -3,7 +3,7 @@ pipeline{
 agent any
   
   parameters{
-    choice (name: env, choices: ['dev', 'test', 'prod'], 
+    choice (name: my_env, choices: ['dev', 'test', 'prod'], 
            description: "Select enviornment for deployment")
   }
   
@@ -17,7 +17,7 @@ agent any
 
     stage('Dev'){
        when{
-          expression{ params.env == 'dev'} 
+          expression{ params.my_env == 'dev'} 
         }
       steps{
         echo "Deplying to dev"
@@ -26,7 +26,7 @@ agent any
 
     stage('prod'){
        when {
-          expression {params.env == 'prod' }
+          expression {params.my_env == 'prod' }
         }
       steps{
        input message : "Type yes to proceed or else no"
