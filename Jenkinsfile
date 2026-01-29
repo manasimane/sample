@@ -4,16 +4,15 @@ agent any
   
   stages{
     
-    stage('Build'){
+    stage('Check_tools'){
       steps{
-      echo "Building the application"
+      sh '''
+      java -version
+      maven -version || true
+      docker -version || true
+      '''
       }
     }
     
-  }
-  post{
-    success { echo "Ran successfully" }
-    failure { echo "Failed pipeline" }
-    always { echo "Ran anyways"}
   }
 }
