@@ -4,12 +4,11 @@ agent any
   
   stages{
     
-    stage('Check_tools'){
+    stage('Build'){
       steps{
+      echo " building application"   
       sh '''
-      java -version
-      mvn -version || true
-      docker --version || true
+      mvn clean package
       '''
       }
     }
