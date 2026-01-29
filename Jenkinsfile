@@ -8,8 +8,8 @@ agent any
       steps{
       sh '''
       java -version
-      maven -version || true
-      docker -version || true
+      mvn -version || true
+      docker --version || true
       '''
       }
     }
