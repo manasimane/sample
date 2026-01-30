@@ -2,8 +2,8 @@ pipeline{
   agent any
 
   environment{
-    app_name : "sample_app"
-    container_name : "sample_app_container"
+    app_name : 'sample_app'
+    container_name : 'sample_app_container'
   }
 
   stages{
