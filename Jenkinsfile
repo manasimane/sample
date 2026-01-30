@@ -2,8 +2,8 @@ pipeline{
   agent any
 
   environment{
-    app_name : 'sample_app'
-    container_name : 'sample_app_container'
+    image_name = 'sample_app'
+    container_name = 'sample_app_container'
   }
 
   stages{
@@ -18,7 +18,7 @@ pipeline{
 
     stage("Archive Artifact"){
       steps{
-        archiveArtifacts artifacts : 'target/ *.jar' , fingerprint : true
+        archiveArtifacts artifacts : 'target/*.jar' , fingerprint : true
       }
     }
 
