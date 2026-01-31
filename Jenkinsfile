@@ -1,47 +1,48 @@
 pipeline{
   agent any
-
   environment{
-    image_name = 'sample_app'
-    container_name = 'sample_app_container'
+    docker_hub = credentials('docker_creds')
+    image_name = "sample_name"
   }
 
   stages{
-
     stage("checkout"){
-      steps{checkout scm}
-    }
-
-    stage("build"){
-      steps{ sh "mvn clean package"}
-    }
-
-    stage("Archive Artifact"){
       steps{
-        archiveArtifacts artifacts : 'target/*.jar' , fingerprint : true
+        checkout scm
       }
     }
-
-    stage("Docker Build"){
+    stage("Build app"){
       steps{
-        sh "docker build -t $image_name:$BUILD_NUMBER ."
+        sh "mvn clean package"
       }
     }
-    
-    stage("Run Container"){
+    stage("Build image"){
       steps{
-        sh '''
-        docker stop $container_name || true
-        docker rm $container_name || true
-        docker run -d -p 8081:8080 --name $container_name $image_name:$BUILD_NUMBER
-        '''
+        docker build -t $image_name:$BUILD_NUMBER .
+      }
+    }
+    stage("Login Dockerhub"){
+      steps{
+        sh "echo $docker_hub_PSW | docker login -u $docker_hub_USR --password-stdin"
+      }
+    }
+    stage("tag & push image to docker hub"){
+      steps{
+        sh """
+        docker tag $image_name:$BUILD_NUMBER $docker_hub_USR/$image_name:$BUILD_NUMBER
+        docker push $docker_hub_USR/$image_name:$BUILD_NUMBER
+        """
+      }
+    }
+    stage("Docker Logout"){
+      steps{
+        sh "docker logout"
       }
     }
   }
-
   post{
     always{
-      echo "Pipeline ran successfully"
+      sh "docker rmi $image_name:$BUILD_NUMBER || true"
     }
   }
 }
