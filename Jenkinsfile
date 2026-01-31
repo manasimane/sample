@@ -21,19 +21,16 @@ pipeline{
         sh "docker build -t $image_name:$BUILD_NUMBER ."
       }
     }
-    stage("Login Dockerhub") {
-      steps {
-        sh 'echo \$docker_hub_PSW | docker login -u \$docker_hub_USR --password-stdin'
-      }
-    }
-   stage("tag & push image to docker hub") {
-      steps {
-        sh """
-        docker tag ${image_name}:${BUILD_NUMBER} ${docker_hub_USR}/${image_name}:${BUILD_NUMBER}
-        docker push ${docker_hub_USR}/${image_name}:${BUILD_NUMBER}
-        """
-      }
-    }
+   stage("Login & Push") {
+            steps {
+                // This block is the most stable way to handle Docker Hub
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_creds', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    sh "echo ${PASS} | docker login -u ${USER} --password-stdin"
+                    sh "docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                    sh "docker push ${USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                }
+            }
+        }
     stage("Docker Logout"){
       steps{
         sh "docker logout"
