@@ -22,12 +22,18 @@ pipeline{
       }
     }
 
-    stage("docker build"){
+    stage("Docker Build"){
+      steps{
+        sh 'docker build -t $image_name:$build_number'
+      }
+    }
+    
+    stage("Run Container"){
       steps{
         sh '''
         docker stop $container_name || true
         docker rm $container_name || true
-        docker run -d -p 8080:8080 --name $container_name $image_name : $build_number
+        docker run -d -p 8080:8080 --name $container_name $image_name:$build_number
         '''
       }
     }
