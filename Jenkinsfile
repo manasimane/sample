@@ -1,7 +1,6 @@
 pipeline{
   agent any
   environment{
-    docker_hub = credentials('dockerhub_creds')
     image_name = "sample_name"
   }
 
