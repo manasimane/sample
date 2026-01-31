@@ -26,11 +26,11 @@ pipeline{
         sh 'echo \$docker_hub_PSW | docker login -u \$docker_hub_USR --password-stdin'
       }
     }
-    stage("tag & push image to docker hub"){
-      steps{
+   stage("tag & push image to docker hub") {
+      steps {
         sh """
-        docker tag $image_name:$BUILD_NUMBER $docker_hub_USR/$image_name:$BUILD_NUMBER
-        docker push $docker_hub_USR/$image_name:$BUILD_NUMBER
+        docker tag ${image_name}:${BUILD_NUMBER} ${docker_hub_USR}/${image_name}:${BUILD_NUMBER}
+        docker push ${docker_hub_USR}/${image_name}:${BUILD_NUMBER}
         """
       }
     }
