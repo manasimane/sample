@@ -1,7 +1,7 @@
 pipeline{
   agent any
   environment{
-    docker_hub = credentials('docker_creds')
+    docker_hub = credentials('dockerhub_creds')
     image_name = "sample_name"
   }
 
@@ -18,7 +18,7 @@ pipeline{
     }
     stage("Build image"){
       steps{
-        docker build -t $image_name:$BUILD_NUMBER .
+        sh "docker build -t $image_name:$BUILD_NUMBER ."
       }
     }
     stage("Login Dockerhub"){
