@@ -42,7 +42,7 @@ pipeline{
         docker pull $docker_hub_USR/$image_name:$BUILD_NUMBER
         docker stop $my_app_container || true
         docker rm $my_app_container || true
-        docker run -d --name my_app_container -p 8080:8081 $docker_hub_USR/$image_name:$BUILD_Number
+        docker run -d --name my_app_container --restart always -p 8080:8081 $docker_hub_USR/$image_name:$BUILD_Number
 
         docker image prune -f
         docker logout
