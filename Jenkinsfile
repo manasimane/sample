@@ -3,7 +3,7 @@ pipeline{
   environment{
     docker_hub = credentials('dockerhub_creds')
     image_name = "sample_name"
-    app_server_ip = ""
+    app_server_ip = "54.83.181.120"
   }
 
   stages{
