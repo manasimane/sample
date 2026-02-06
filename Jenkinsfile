@@ -38,8 +38,15 @@ pipeline{
     stage("Deploy to app server"){
       steps{
         sh '''
-        
+        ssh -o StrictHostKeyChecking=no ubuntu@$app_server_ip "
+        docker pull $docker_hub_USR/$image_name:$BUILD_Number
+        docker stop $my_app_container || true
+        docker rm $my_app_container || true
+        docker run -d --name my_app_container -p 8080:8081 $docker_hub_USR/$image_name:$BUILD_Number
 
+        docker image prune -f
+        docker logout
+        "
         '''
       }
     }
@@ -48,7 +55,11 @@ pipeline{
   
   post{
     always{
-      sh "docker rmi $image_name:$BUILD_NUMBER || true"
+      sh """
+      docker logout
+      docker rmi $image_name:$BUILD_NUMBER || true
+      docker rmi $docker_hub_USR/$image_name:$BUILD_Number
+      """
     }
   }
 }
