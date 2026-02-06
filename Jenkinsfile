@@ -39,7 +39,7 @@ pipeline{
       steps{
         sh '''
         ssh -o StrictHostKeyChecking=no ubuntu@$app_server_ip "
-        docker pull $docker_hub_USR/$image_name:$BUILD_Number
+        docker pull $docker_hub_USR/$image_name:$BUILD_NUMBER
         docker stop $my_app_container || true
         docker rm $my_app_container || true
         docker run -d --name my_app_container -p 8080:8081 $docker_hub_USR/$image_name:$BUILD_Number
